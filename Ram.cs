@@ -10,7 +10,7 @@ namespace extratorDeInformacao
         private Process process = new Process();
         public List<int> Velocidade {
             get {
-                #region pegando informacao
+                #region pegando informacao do cmd
                 Process velProcess = process;
 
                 velProcess.StartInfo.FileName = "wmic";
@@ -18,21 +18,18 @@ namespace extratorDeInformacao
 
                 velProcess.Start();
                 
-                var velNaoFormatado = velProcess.StandardOutput.ReadToEnd();
+                var valorEntrada = velProcess.StandardOutput.ReadToEnd();
                 #endregion
 
+                valorEntrada = limparStrig(valorEntrada);
 
+                var listaDeFrequencias = valorEntrada.Split("-").ToList<string>();
 
-                velNaoFormatado = velNaoFormatado.Replace("Speed", "");
-                velNaoFormatado = limparStrig(velNaoFormatado);
+                //so falta filtrar a lista deixando apenas os numeros;
 
-                var listaDeFrequencias = velNaoFormatado.Split(" ").Where(valor => valor != "");// aqi deu pau
-
-                //matando o processo
                 velProcess.Kill();
 
-                //return velNaoFormatado;
-                //return listaDeFrequencias.Select(frequencia => Convert.ToInt32(frequencia)).ToList(); 
+                return  listaDeFrequencias.Select(int.Parse).ToList();
             }
             private set { }
         }
@@ -46,8 +43,11 @@ namespace extratorDeInformacao
         private string limparStrig(string valor)
         {
             return valor.Trim()
-                .Replace("\r", "")
-                .Replace("\n", "");
+                .Replace("\r", "-")
+                .Replace("\n", "-")
+                .Replace(" ", "-")
+                .Replace("Speed", "-");
+
         }
 
     }
