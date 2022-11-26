@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolrNet.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,18 +19,25 @@ namespace extratorDeInformacao
 
                 velProcess.Start();
                 
-                var valorEntrada = velProcess.StandardOutput.ReadToEnd();
+                var getVel = velProcess.StandardOutput.ReadToEnd();
                 #endregion
 
-                valorEntrada = limparStrig(valorEntrada);
+                getVel = limparStrig(getVel);
 
-                var listaDeFrequencias = valorEntrada.Split("-").ToList<string>();
+                var a = getVel.Split("-").ToList<string>();
 
-                //so falta filtrar a lista deixando apenas os numeros;
+                List<int> listaDeFrequencias = new List<int>();
 
+                for (int i = 0; i <= a.Count(); i++)
+                {
+                    if (a[i] != "")
+                    {
+                        listaDeFrequencias.Add(Convert.ToInt32(a[i]));
+                    }
+                }
                 velProcess.Kill();
 
-                return  listaDeFrequencias.Select(int.Parse).ToList();
+                return listaDeFrequencias;
             }
             private set { }
         }
