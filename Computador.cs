@@ -14,11 +14,11 @@ namespace extratorDeInformacao
         {
 
             #region variaveis
-            string getCmd;
+            
             Memory memoriaRam = new Memory();
-            
-            List<string> generic = new List<string>();
-            
+
+            List<string> getCmd = new List<string>();
+
             #endregion
 
             Process process = new Process();
@@ -28,20 +28,20 @@ namespace extratorDeInformacao
             process.StartInfo.RedirectStandardOutput = true;
 
             #region pegando informacao da memoria ram e colocando na classe listMemoriaRam
-            
+
             //pegando a velocidade da memoria ram
             process.StartInfo.FileName = "wmic";
             process.StartInfo.Arguments = "memorychip get speed";
 
             process.Start();
 
-            getCmd = process.StandardOutput.ReadToEnd();
+            getCmd = LimparStrig(process.StandardOutput.ReadToEnd());
 
-            
-            for (int i = 0; i <= generic.Count -1; i++)
+
+            for (int i = 0; i <= getCmd.Count - 1; i++)
             {
                 ListMemoriaRam.Add(memoriaRam);
-                ListMemoriaRam[i].UncoreFrequency = Convert.ToDouble(generic[i]);
+                ListMemoriaRam[i].UncoreFrequency = Convert.ToDouble(getCmd[i]);
             }
 
             //peagndo o manufacturer
@@ -50,18 +50,17 @@ namespace extratorDeInformacao
 
             process.Start();
 
-            getCmd = process.StandardOutput.ReadToEnd();
+            getCmd = LimparStrig(process.StandardOutput.ReadToEnd());
 
-            generic = LimparStrig(getCmd);
-            for (int i = 0; i <= generic.Count - 1; i++)
+            for (int i = 0; i <= getCmd.Count - 1; i++)
             {
-                ListMemoriaRam[i].Manufacturer = generic[i];
+                ListMemoriaRam[i].Manufacturer = getCmd[i];
             }
 
-            getCmd = process.StandardOutput.ReadToEnd();
+           
 
 
-            
+
             #endregion
 
             process.Kill();
@@ -80,7 +79,7 @@ namespace extratorDeInformacao
            .Split("-");
 
 
-            for (int i = 0; i <= valueVetor.Length -1; i++)
+            for (int i = 0; i <= valueVetor.Length - 1; i++)
             {
                 if (valueVetor[i] != "")
                 {

@@ -6,10 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace extratorDeInformacao
+namespace copy_cpu_Z
 {
     public partial class Form1 : Form
     {
@@ -18,17 +17,5 @@ namespace extratorDeInformacao
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            Ram memoria = new Ram();
-
-            for (var i = 0; i >= memoria.Velocidade.Count; i++)
-            {
-                label1.Text = memoria.Velocidade[i] + "   ";
-            }
-            
-
-
-        }
     }
 }
