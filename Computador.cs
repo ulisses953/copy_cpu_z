@@ -7,7 +7,7 @@ namespace extratorDeInformacao
 {
     class Computador
     {
-        public List<Memory> listMemoriaRam = new List<Memory>();
+        public List<Memory> ListMemoriaRam = new List<Memory>();
 
 
         public Computador()
@@ -27,8 +27,9 @@ namespace extratorDeInformacao
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardOutput = true;
 
-            #region pegando informacao da memoria ram e colocando na classe ram
-
+            #region pegando informacao da memoria ram e colocando na classe listMemoriaRam
+            
+            //pegando a velocidade da memoria ram
             process.StartInfo.FileName = "wmic";
             process.StartInfo.Arguments = "memorychip get speed";
 
@@ -36,21 +37,34 @@ namespace extratorDeInformacao
 
             getCmd = process.StandardOutput.ReadToEnd();
 
-            generic = LimparStrig(getCmd);
+            
             for (int i = 0; i <= generic.Count -1; i++)
             {
-                listMemoriaRam.Add(memoriaRam);
-                listMemoriaRam[i].UncoreFrequency = Convert.ToDouble(generic[i]);
+                ListMemoriaRam.Add(memoriaRam);
+                ListMemoriaRam[i].UncoreFrequency = Convert.ToDouble(generic[i]);
             }
-            
-            
-            
-            
+
+            //peagndo o manufacturer
+            process.StartInfo.FileName = "wmic";
+            process.StartInfo.Arguments = "memorychip get manufacturer";
+
+            process.Start();
+
+            getCmd = process.StandardOutput.ReadToEnd();
+
+            generic = LimparStrig(getCmd);
+            for (int i = 0; i <= generic.Count - 1; i++)
+            {
+                ListMemoriaRam[i].Manufacturer = generic[i];
+            }
+
+            getCmd = process.StandardOutput.ReadToEnd();
+
 
             
             #endregion
 
-
+            process.Kill();
         }
 
         private List<string> LimparStrig(string value)
@@ -62,7 +76,9 @@ namespace extratorDeInformacao
            .Replace("\n", "-")
            .Replace("Speed", "")
            .Replace(" ", "")
+           .Replace("Manufacturer", "")
            .Split("-");
+
 
             for (int i = 0; i <= valueVetor.Length -1; i++)
             {
@@ -78,32 +94,3 @@ namespace extratorDeInformacao
 
 }
 
-/* 
-  process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardOutput = true;
-
-            #region variaveis
-           
-            string getVel;
-            #endregion
-
-            #region pegando informacao do cmd
-            Process velProcess = process;
-
-           
-
-            velProcess.Start();
-
-            getVel = velProcess.StandardOutput.ReadToEnd();
-            #endregion
-
-            ListaDeFrequencias = LimparStrig(getVel);
-
-            velProcess.Kill();
-
-            Velocidade = ListaDeFrequencias[0];
-        }
-
-        
- */
