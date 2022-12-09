@@ -4,24 +4,17 @@ using System.Diagnostics;
 using System.Linq;
 
 
-namespace extratorDeInformacao
+namespace copy_cpu_Z
 {
+    
     public class Memory
     {
-        public string Type { get; set; }
-        public int Size
-        {
-            get { return 1; }
-            set { }
-        }
-        public string Channel { get; set; }
-        public double UncoreFrequency { get; set; }
+        public double Speed { get; set; }
         public string Manufacturer { get; set; }
+        public string Caption { get; set; }
+        public string SerialNunber { get; set; }
 
-        public Memory()
-        {
-           
-        }
+        
     }
 }
 
